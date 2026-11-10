@@ -911,6 +911,8 @@ def main() -> NoReturn:
     timer.start(500)
     timer.timeout.connect(lambda: None)
 
+    # Keep a reference: AppInitManager owns the splash dialog and the plugin
+    # loader QThread; it must outlive app.exec_() or they are GC'd mid-run.
     # pylint: disable=unused-variable
     app_init_manager = AppInitManager()
     app.exec_()
