@@ -65,6 +65,7 @@ from browser_choice.chooseinstallationpage import (
 from browser_choice.confirminstallationdialog import ConfirmInstallationDialog
 from browser_choice.applyingchangespage import ApplyingChangesPage
 from browser_choice.changescompletepage import ChangesCompletePage
+from guimessages.check_display import exit_if_no_gui
 
 
 ## This has to be a global so that it can be passed between threads. Trying to
@@ -896,6 +897,10 @@ def main() -> NoReturn:
         except PermissionError:
             GlobalData.log_file = None
 
+    # Headless guard: a QApplication on a machine with no display SIGABRTs (exit 134,
+    # uncatchable C++ qFatal). Exit cleanly (0) instead -- after option/log handling,
+    # immediately before the QApplication is constructed.
+    exit_if_no_gui()
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
 
@@ -906,6 +911,8 @@ def main() -> NoReturn:
     timer.start(500)
     timer.timeout.connect(lambda: None)
 
+    # Keep a reference: AppInitManager owns the splash dialog and the plugin
+    # loader QThread; it must outlive app.exec_() or they are GC'd mid-run.
     # pylint: disable=unused-variable
     app_init_manager = AppInitManager()
     app.exec_()
