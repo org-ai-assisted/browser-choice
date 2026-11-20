@@ -1,4 +1,4 @@
-#!/usr/bin/python3 -su
+#!/usr/bin/python3 -Bsu
 
 # Copyright (C) 2025 - 2025 ENCRYPTED SUPPORT LLC <adrelanos@whonix.org>
 # See the file COPYING for copying conditions.
@@ -62,6 +62,7 @@ def get_qubes_version() -> str:
         if marker_version is not None:
             return marker_version
     except Exception:
+        # marker-vm file is corrupt, fall back to reporting "unknown".
         pass
 
     return "0"
