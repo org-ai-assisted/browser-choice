@@ -62,7 +62,7 @@ def get_qubes_version() -> str:
         if marker_version is not None:
             return marker_version
     except Exception:
-        # Unreadable/garbled marker-vm file: treat version as unknown ("0").
+        # marker-vm file is corrupt, fall back to reporting "unknown".
         pass
 
     return "0"

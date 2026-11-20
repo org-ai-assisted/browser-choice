@@ -881,6 +881,8 @@ def main() -> NoReturn:
     Main function.
     """
 
+    exit_if_no_gui()
+
     try:
         GlobalData.log_dir_path.mkdir(exist_ok=True)
     except Exception:
@@ -897,10 +899,6 @@ def main() -> NoReturn:
         except PermissionError:
             GlobalData.log_file = None
 
-    # Headless guard: a QApplication on a machine with no display SIGABRTs (exit 134,
-    # uncatchable C++ qFatal). Exit cleanly (0) instead -- after option/log handling,
-    # immediately before the QApplication is constructed.
-    exit_if_no_gui()
     app = QApplication(sys.argv)
     app.setQuitOnLastWindowClosed(False)
 
@@ -911,8 +909,6 @@ def main() -> NoReturn:
     timer.start(500)
     timer.timeout.connect(lambda: None)
 
-    # Keep a reference: AppInitManager owns the splash dialog and the plugin
-    # loader QThread; it must outlive app.exec_() or they are GC'd mid-run.
     # pylint: disable=unused-variable
     app_init_manager = AppInitManager()
     app.exec_()
