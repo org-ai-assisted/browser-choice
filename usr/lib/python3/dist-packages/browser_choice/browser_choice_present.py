@@ -65,6 +65,7 @@ from browser_choice.chooseinstallationpage import (
 from browser_choice.confirminstallationdialog import ConfirmInstallationDialog
 from browser_choice.applyingchangespage import ApplyingChangesPage
 from browser_choice.changescompletepage import ChangesCompletePage
+from guimessages.check_display import exit_if_no_gui
 
 
 ## This has to be a global so that it can be passed between threads. Trying to
@@ -879,6 +880,8 @@ def main() -> NoReturn:
     """
     Main function.
     """
+
+    exit_if_no_gui()
 
     try:
         GlobalData.log_dir_path.mkdir(exist_ok=True)
