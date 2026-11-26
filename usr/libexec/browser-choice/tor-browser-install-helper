@@ -21,8 +21,6 @@ apt-get-noninteractive --no-install-recommends --yes install tb-updater tb-start
 set +x
 
 ## sets: boot_session
-## FIXME: We need helper-scripts pulled in for CI to avoid a shellcheck issue
-## here.
 # shellcheck source=../../../../helper-scripts/usr/libexec/helper-scripts/boot-session-detection.bsh
 source "${HELPER_SCRIPTS_PATH:-}"/usr/libexec/helper-scripts/boot-session-detection.bsh
 
